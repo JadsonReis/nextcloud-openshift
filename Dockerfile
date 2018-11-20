@@ -1,5 +1,5 @@
-#FROM nginx:alpine
-FROM centos/nginx-18-centos7
+FROM nginx:alpine
+# FROM centos/nginx-18-centos7
 
 VOLUME /var/www/html
 COPY nginx.conf /etc/nginx/nginx.conf
