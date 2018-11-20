@@ -97,7 +97,7 @@ objects:
       dockerStrategy:
         from:
           kind: DockerImage
-          name: nginx:alpine
+          name: centos/nginx-18-centos7
       type: Docker
     triggers:
     - type: ConfigChange
