@@ -24,18 +24,19 @@ parameters:
   value: https://github.com/JadsonReis/nextcloud-openshift.git
 - name: PVC_SIZE
   description: PVC size for Apps, Config and Data
-  value: 5Gi
+  value: 4Gi
 objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: nextcloud-data
+    name: nfs-nextcloud-claim15
   spec:
     accessModes:
-    - ReadWriteMany
+       - ReadWriteMany
+    storageClassName: ""
     resources:
       requests:
-        storage: ${PVC_SIZE}
+        storage: 4Gi
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -172,13 +173,13 @@ objects:
           - mountPath: /var/www/html
             name: nextcloud-source
           - mountPath: /var/www/html/data
-            name: nextcloud-data
+            name: nfs-nextcloud-claim15
             subPath: data
           - mountPath: /var/www/html/config
-            name: nextcloud-data
+            name: nfs-nextcloud-claim15
             subPath: config
           - mountPath: /var/www/html/custom_apps
-            name: nextcloud-data
+            name: nfs-nextcloud-claim15
             subPath: apps
         - image: nginx
           imagePullPolicy: Always
@@ -208,13 +209,13 @@ objects:
           - mountPath: /var/www/html
             name: nextcloud-source
           - mountPath: /var/www/html/data
-            name: nextcloud-data
+            name: nfs-nextcloud-claim15
             subPath: data
           - mountPath: /var/www/html/config
-            name: nextcloud-data
+            name: nfs-nextcloud-claim15
             subPath: config
           - mountPath: /var/www/html/custom_apps
-            name: nextcloud-data
+            name: nfs-nextcloud-claim15
             subPath: apps
         dnsPolicy: ClusterFirst
         restartPolicy: Always
@@ -223,9 +224,9 @@ objects:
         volumes:
         - emptyDir: {}
           name: nextcloud-source
-        - name: nextcloud-data
+        - name: nfs-nextcloud-claim15
           persistentVolumeClaim:
-            claimName: nextcloud-data
+            claimName: nfs-nextcloud-claim15
     test: false
     triggers:
     - imageChangeParams:
@@ -315,13 +316,13 @@ objects:
               - mountPath: /var/www/html
                 name: nextcloud-source
               - mountPath: /var/www/html/data
-                name: nextcloud-data
+                name: nfs-nextcloud-claim15
                 subPath: data
               - mountPath: /var/www/html/config
-                name: nextcloud-data
+                name: nfs-nextcloud-claim15
                 subPath: config
               - mountPath: /var/www/html/custom_apps
-                name: nextcloud-data
+                name: nfs-nextcloud-claim15
                 subPath: apps
             dnsPolicy: ClusterFirst
             restartPolicy: Never
@@ -330,8 +331,8 @@ objects:
             volumes:
             - emptyDir: {}
               name: nextcloud-source
-            - name: nextcloud-data
+            - name: nfs-nextcloud-claim15
               persistentVolumeClaim:
-                claimName: nextcloud-data
+                claimName: nfs-nextcloud-claim15
     schedule: '*/15 * * * *'
     suspend: false
